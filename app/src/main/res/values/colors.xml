@@ -20,4 +20,6 @@
 
     <color name="secondaryDarkColor">#00701a</color>
 
+    <color name="dish_image_background">#E1E1E1</color>
+
 </resources>
