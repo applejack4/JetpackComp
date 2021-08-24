@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomp.databinding.FragmentDashboardBinding
-import com.example.jetpackcomp.ViewModel.DashboardViewModel
+import com.example.jetpackcomp.ViewModel.FaviorateDishViewModel
+import com.example.jetpackcomp.databinding.FragmentFavoriteDishBinding
 
-class DashboardFragment : Fragment() {
+class FaviorateDishes : Fragment() {
 
-  private lateinit var dashboardViewModel: DashboardViewModel
-private var _binding: FragmentDashboardBinding? = null
+  private lateinit var dashboardViewModel: FaviorateDishViewModel
+private var _binding:  FragmentFavoriteDishBinding?= null
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -25,9 +25,9 @@ private var _binding: FragmentDashboardBinding? = null
     savedInstanceState: Bundle?
   ): View? {
     dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(FaviorateDishViewModel::class.java)
 
-    _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+    _binding = FragmentFavoriteDishBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
     val textView: TextView = binding.textDashboard

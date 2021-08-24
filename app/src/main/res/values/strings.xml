@@ -3,8 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    
+
     <string name="title_select_dish_type">Select Dish Type</string>
     <string name="title_select_category">Select Category</string>
     <string name="title_select_type">Select type</string>
+
+    <string name="title_favorite_dish">Favorite Dish</string>
+    <string name="title_random_dish">Random Dish</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

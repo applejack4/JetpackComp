@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.jetpackcomp.Model.entities.JetpackComp
 
 
-@Database(entities = [JetpackComp::class], version = 1)
+@Database(entities = [JetpackComp::class], version = 1, exportSchema = false)
 abstract class JetPackCompDatabase : RoomDatabase() {
 
     abstract fun JetpackDao(): JetpackDao
