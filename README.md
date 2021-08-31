@@ -19,7 +19,7 @@ The above application is developed by me from a course on udemy that includes al
 #### https://spoonacular.com/food-api
 
 ## API Reference
-- use the above API to fetch the data
+- use the above API to fetch the data.
 - #### https://api.spoonacular.com/recipes/random?&apiKey=c0fd44b72****************&number=1&tags=vegetarian,dessert
 (Use the api key after logging in to fetch the data)
 
@@ -27,9 +27,9 @@ The above application is developed by me from a course on udemy that includes al
 - git https://github.com/applejack4/JetpackComp.git
 
 ## 2. Import the project in AndroidStudio, and add API Key
--  In Android Studio, go to File -> New -> Import project
+-  In Android Studio, go to File -> New -> Import project.
 -  Follew the dialog wizard to choose the folder where you cloned the project and click on open.
--  Android Studio imports the projects and builds it for you
+-  Android Studio imports the projects and builds it for you.
 
 ## 3.🤝 How to contribute
 - Fork it
@@ -39,7 +39,7 @@ The above application is developed by me from a course on udemy that includes al
 - Create new Pull Request
 
 ## 🚀 Jetpack Components 
-- jetpack components included in this project 
+- jetpack components included in this project .
 
 ### Architecture Components
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
@@ -66,5 +66,8 @@ The above application is developed by me from a course on udemy that includes al
 ## 📃 libraries used
 - [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android (Java and Kotlin).
 - [Kotlin](https://developer.android.com/kotlin) - First class and official programming language for Android development.
-- [Glide](https://github.com/bumptech/glide) - To load the images in recyclerview
-- [RxJava](https://github.com/ReactiveX/RxAndroid) - It is used to manage all the data and events in your android application
+- [Glide](https://github.com/bumptech/glide) - To load the images in recyclerview.
+- [RxJava](https://github.com/ReactiveX/RxAndroid) - It is used to manage all the data and events in your android application.
+- [AndroidKtx](https://developer.android.com/kotlin/ktx) - It is a set of kotlin jetpack component extensions.
+- [Dexter](https://github.com/Karumi/Dexter) - It makes requestingg permissions easy.
+- [Intuit](https://github.com/intuit/sdp) - It scales the views according to Device screen size.
