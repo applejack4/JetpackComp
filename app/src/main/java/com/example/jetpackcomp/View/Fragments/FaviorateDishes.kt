@@ -4,41 +4,74 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.jetpackcomp.ViewModel.FaviorateDishViewModel
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.jetpackcomp.Model.entities.JetpackComp
+import com.example.jetpackcomp.View.Activities.MainActivity
+import com.example.jetpackcomp.View.adapter.favDishAdapter
+import com.example.jetpackcomp.ViewModel.JetPackCompViewModel
+import com.example.jetpackcomp.ViewModel.JetPackCompViewModelFactory
+import com.example.jetpackcomp.application.JetPackCompApplication
 import com.example.jetpackcomp.databinding.FragmentFavoriteDishBinding
 
-class FaviorateDishes : Fragment() {
 
-  private lateinit var dashboardViewModel: FaviorateDishViewModel
-private var _binding:  FragmentFavoriteDishBinding?= null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+class FaviorateDishes : Fragment() {
+private var mbinding:  FragmentFavoriteDishBinding?= null
+
+  private val mFavDishViewModel : JetPackCompViewModel by viewModels {
+    JetPackCompViewModelFactory((requireActivity().application as JetPackCompApplication).repository)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    dashboardViewModel =
-            ViewModelProvider(this).get(FaviorateDishViewModel::class.java)
 
-    _binding = FragmentFavoriteDishBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    mbinding = FragmentFavoriteDishBinding.inflate(layoutInflater, container, false)
+    return mbinding!!.root
+  }
 
-    val textView: TextView = binding.textDashboard
-    dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-      textView.text = it
-    })
-    return root
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    mFavDishViewModel.favoriteDishes.observe(viewLifecycleOwner){
+      dishes ->
+      dishes.let {
+        mbinding?.rvFavoriteDishes?.layoutManager = GridLayoutManager(requireActivity(), 2)
+        val adapter = favDishAdapter(this)
+        mbinding?.rvFavoriteDishes?.adapter = adapter
+        if(it.isNotEmpty()){
+          for (dish in it){
+            mbinding!!.rvFavoriteDishes.visibility = View.VISIBLE
+            mbinding!!.textDashboard.visibility = View.GONE
+            adapter.dishesList(it)
+          }
+        }else{
+          mbinding!!.rvFavoriteDishes.visibility = View.GONE
+          mbinding!!.textDashboard.visibility = View.VISIBLE
+        }
+      }
+    }
+  }
+
+  fun dishDetails(jetpackComp: JetpackComp){
+    findNavController().navigate(FaviorateDishesDirections.actionNavigationFavoriteDishToDishDetailFragment(jetpackComp))
+    if(requireActivity() is MainActivity){
+      (activity as MainActivity?)!!.hideBottomNavigation()
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    if(requireActivity() is MainActivity){
+      (activity as MainActivity?)!!.showBottomNavigation()
+    }
   }
 
 override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        mbinding = null
     }
 }

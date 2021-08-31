@@ -9,21 +9,21 @@
         android:id="@+id/navigation_home"
         android:name="com.example.jetpackcomp.View.Fragments.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_dishDetailFragment"
             app:destination="@id/dishDetailFragment" />
-        <argument
-            android:name="products"
-            android:defaultValue=""
-            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_favorite_dish"
         android:name="com.example.jetpackcomp.View.Fragments.FaviorateDishes"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_favorite_dish" />
+        tools:layout="@layout/fragment_favorite_dish">
+        <action
+            android:id="@+id/action_navigation_favorite_dish_to_dishDetailFragment"
+            app:destination="@id/dishDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_random_dish"
@@ -35,5 +35,8 @@
         android:id="@+id/dishDetailFragment"
         android:name="com.example.jetpackcomp.View.Fragments.DishDetailFragment"
         android:label="fragment_dish_detail"
-        tools:layout="@layout/fragment_dish_detail" />
+        tools:layout="@layout/fragment_dish_detail">
+        <argument android:name="dishDetails"
+            app:argType="com.example.jetpackcomp.Model.entities.JetpackComp"/>
+    </fragment>
 </navigation>

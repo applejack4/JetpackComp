@@ -3,12 +3,15 @@ package com.example.jetpackcomp.View.adapter
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackcomp.View.Activities.AddUpdate
+import com.example.jetpackcomp.View.Fragments.HomeFragment
 import com.example.jetpackcomp.databinding.ItemCustomListBinding
 
 class CustomItemListAdapter(
     private val activity : Activity,
+    private val fragment : Fragment?,
     private val listItems : List<String>,
     private val selectedItem : String): RecyclerView.Adapter<CustomItemListAdapter.MyViewHolder>() {
 
@@ -29,6 +32,9 @@ class CustomItemListAdapter(
         holder.itemView.setOnClickListener{
             if(activity is AddUpdate){
                 activity.selectedListItem(items, selectedItem)
+            }
+            if(fragment is HomeFragment){
+                fragment.filterSelection(items)
             }
         }
     }

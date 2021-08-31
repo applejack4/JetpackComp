@@ -12,5 +12,21 @@ class JetpackCompRepo(private val jetPackDao : JetpackDao) {
     }
 
     val allDishesList : Flow<List<JetpackComp>> = jetPackDao.getAllDishesList()
+
+    @WorkerThread
+    suspend fun updateFavDishData(jetPackComp: JetpackComp){
+        jetPackDao.updateFavDishDetail(jetPackComp)
+    }
+
+    val allFavoriteDishesList : Flow<List<JetpackComp>> = jetPackDao.getFavoriteDishes()
+
+    @WorkerThread
+    suspend fun deleteFavDishData(jetPackComp: JetpackComp){
+        jetPackDao.deleteFavDishDetails(jetPackComp)
+    }
+
+    @WorkerThread
+    fun filteredDishesList(value : String) : Flow<List<JetpackComp>> = jetPackDao.getFilterDishesList(value)
+
 }
 

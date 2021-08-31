@@ -34,6 +34,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.jetpackcomp.Model.entities.JetpackComp
+import com.example.jetpackcomp.View.Fragments.HomeFragment
 import com.example.jetpackcomp.View.adapter.CustomItemListAdapter
 import com.example.jetpackcomp.ViewModel.JetPackCompViewModel
 import com.example.jetpackcomp.ViewModel.JetPackCompViewModelFactory
@@ -60,6 +61,7 @@ class AddUpdate : AppCompatActivity(), View.OnClickListener {
     lateinit var addUpdate : ActivityAddUpdateBinding
     private var imagePath : String = ""
     private lateinit var customListDialog: Dialog
+    private var mFavDishDetails : JetpackComp? = null
 
     private val jetPackCompViewModel : JetPackCompViewModel by viewModels {
         JetPackCompViewModelFactory((application as JetPackCompApplication).repository)
@@ -79,9 +81,40 @@ class AddUpdate : AppCompatActivity(), View.OnClickListener {
         addUpdate.etCategory.setOnClickListener(this)
         addUpdate.etType.setOnClickListener(this)
         addUpdate.addUpdateSubmit.setOnClickListener(this)
+
+        if(intent.hasExtra(Constants.EXTRA_DISH_DETAILS)){
+            mFavDishDetails = intent.getParcelableExtra(Constants.EXTRA_DISH_DETAILS)
+        }
+
+        mFavDishDetails?.let {
+            if(it.id != 0){
+                imagePath = it.image
+                Glide.with(this@AddUpdate).load(imagePath).centerCrop().into(addUpdate.imageViewSsey)
+                addUpdate.etTitle.setText(it.title)
+                addUpdate.etCategory.setText(it.category)
+                addUpdate.etType.setText(it.type)
+                addUpdate.etIngredients.setText(it.ingredients)
+                addUpdate.etCooking.setText(it.cookingTime)
+                addUpdate.etCookingDirections.setText(it.DirectionsToCook)
+
+                addUpdate.addUpdateSubmit.text = resources.getString(R.string.Submit)
+            }
+        }
     }
 
     private fun setupActionbar(){
+        if(mFavDishDetails != null && mFavDishDetails!!.id != 0){
+            supportActionBar?.let {
+                it.title = resources.getString(R.string.edit_dish)
+            }
+        }else{
+            supportActionBar.let {
+                if (it != null) {
+                    it.title = resources.getString(R.string.add_dish)
+                }
+            }
+        }
+
         setSupportActionBar(addUpdate.toolbarAdd)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         addUpdate.toolbarAdd.setNavigationOnClickListener{
@@ -138,19 +171,44 @@ class AddUpdate : AppCompatActivity(), View.OnClickListener {
                             Toast.makeText(this@AddUpdate, "Be sure to include cooking directions", Toast.LENGTH_LONG).show()
                         }
                         else ->{
+
+                            var dishId = 0
+                            var imageSource = Constants.LOCAL_IMAGE_SOURCE
+                            var favoriteDish = false
+
+                            mFavDishDetails?.let {
+                                if(it.id != 0){
+                                    dishId = it.id
+                                    imageSource = it.imageSource
+                                    favoriteDish = it.FavoriteDish
+                                }
+                            }
+
                             val jetPackDetails : JetpackComp = JetpackComp(
                                 imagePath,
-                                Constants.LOCAL_IMAGE_SOURCE,
+                                imageSource,
                                 title,
                                 type,
                                 category,
                                 ingredients,
                                 cookingTimeMinutes,
                                 cookingDirections,
-                                false
+                                favoriteDish,
+                                dishId
                             )
                             jetPackCompViewModel.insert(jetPackDetails)
                             Toast.makeText(this@AddUpdate, "Successfully added the data", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this@AddUpdate, HomeFragment::class.java))
+                            finish()
+
+                            if(dishId == 0){
+                               jetPackCompViewModel.insert(jetPackDetails)
+                                Toast.makeText(this@AddUpdate, "Successfully added the data", Toast.LENGTH_LONG).show()
+                            }else{
+                                jetPackCompViewModel.update(jetPackDetails)
+                                Toast.makeText(this@AddUpdate, "Successfully updated the data", Toast.LENGTH_LONG).show()
+                            }
+                            finish()
                         }
                     }
                 }
@@ -316,7 +374,7 @@ class AddUpdate : AppCompatActivity(), View.OnClickListener {
         binding.tvDialogList.text = title
 
         binding.rvListDialog.layoutManager = LinearLayoutManager(this)
-        val adapter = CustomItemListAdapter(this, itemList, selection)
+        val adapter = CustomItemListAdapter(this, null ,itemList, selection)
         binding.rvListDialog.adapter = adapter
         customListDialog.show()
     }
